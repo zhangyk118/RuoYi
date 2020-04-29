@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.meal.release.mapper.MealReleaseMapper">
+    
+    <resultMap type="MealRelease" id="MealReleaseResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="mealClassCode"    column="meal_class_code"    />
+        <result property="mealClassName"    column="meal_class_name"    />
+        <result property="merchantName"    column="merchant_name"    />
+        <result property="meatNumber"    column="meat_number"    />
+        <result property="meatId"    column="meat_id"    />
+        <result property="elementNumber"    column="element_number"    />
+        <result property="elementId"    column="element_id"    />
+        <result property="stapleNumber"    column="staple_number"    />
+        <result property="stapleFoodId"    column="staple_food_id"    />
+        <result property="drinkNumber"    column="drink_number"    />
+        <result property="drinkId"    column="drink_id"    />
+        <result property="releaseTime"    column="release_time"    />
+        <result property="isDisplay"    column="is_display"    />
+        <result property="dr"    column="dr"    />
+        <result property="price"    column="price"    />
+        <result property="bak"    column="bak"    />
+        <result property="def"    column="def"    />
+    </resultMap>
+
+    <sql id="selectMealReleaseVo">
+        select id, code, meal_class_code, meal_class_name, merchant_name, meat_number, meat_id, element_number, element_id, staple_number, staple_food_id, drink_number, drink_id, release_time, is_display, dr, price, bak, def from meal_release
+    </sql>
+
+    <select id="selectMealReleaseList" parameterType="MealRelease" resultMap="MealReleaseResult">
+        <include refid="selectMealReleaseVo"/>
+        <where>  
+            <if test="mealClassName != null  and mealClassName != ''"> and meal_class_name like concat('%', #{mealClassName}, '%')</if>
+            <if test="merchantName != null  and merchantName != ''"> and merchant_name like concat('%', #{merchantName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectMealReleaseById" parameterType="Long" resultMap="MealReleaseResult">
+        <include refid="selectMealReleaseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMealRelease" parameterType="MealRelease" useGeneratedKeys="true" keyProperty="id">
+        insert into meal_release
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null  and code != ''">code,</if>
+            <if test="mealClassCode != null  and mealClassCode != ''">meal_class_code,</if>
+            <if test="mealClassName != null  and mealClassName != ''">meal_class_name,</if>
+            <if test="merchantName != null  and merchantName != ''">merchant_name,</if>
+            <if test="meatNumber != null ">meat_number,</if>
+            <if test="meatId != null ">meat_id,</if>
+            <if test="elementNumber != null ">element_number,</if>
+            <if test="elementId != null ">element_id,</if>
+            <if test="stapleNumber != null ">staple_number,</if>
+            <if test="stapleFoodId != null ">staple_food_id,</if>
+            <if test="drinkNumber != null ">drink_number,</if>
+            <if test="drinkId != null ">drink_id,</if>
+            <if test="releaseTime != null ">release_time,</if>
+            <if test="isDisplay != null  and isDisplay != ''">is_display,</if>
+            <if test="dr != null  and dr != ''">dr,</if>
+            <if test="price != null ">price,</if>
+            <if test="bak != null  and bak != ''">bak,</if>
+            <if test="def != null  and def != ''">def,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="mealClassCode != null  and mealClassCode != ''">#{mealClassCode},</if>
+            <if test="mealClassName != null  and mealClassName != ''">#{mealClassName},</if>
+            <if test="merchantName != null  and merchantName != ''">#{merchantName},</if>
+            <if test="meatNumber != null ">#{meatNumber},</if>
+            <if test="meatId != null ">#{meatId},</if>
+            <if test="elementNumber != null ">#{elementNumber},</if>
+            <if test="elementId != null ">#{elementId},</if>
+            <if test="stapleNumber != null ">#{stapleNumber},</if>
+            <if test="stapleFoodId != null ">#{stapleFoodId},</if>
+            <if test="drinkNumber != null ">#{drinkNumber},</if>
+            <if test="drinkId != null ">#{drinkId},</if>
+            <if test="releaseTime != null ">#{releaseTime},</if>
+            <if test="isDisplay != null  and isDisplay != ''">#{isDisplay},</if>
+            <if test="dr != null  and dr != ''">#{dr},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="bak != null  and bak != ''">#{bak},</if>
+            <if test="def != null  and def != ''">#{def},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMealRelease" parameterType="MealRelease">
+        update meal_release
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="mealClassCode != null  and mealClassCode != ''">meal_class_code = #{mealClassCode},</if>
+            <if test="mealClassName != null  and mealClassName != ''">meal_class_name = #{mealClassName},</if>
+            <if test="merchantName != null  and merchantName != ''">merchant_name = #{merchantName},</if>
+            <if test="meatNumber != null ">meat_number = #{meatNumber},</if>
+            <if test="meatId != null ">meat_id = #{meatId},</if>
+            <if test="elementNumber != null ">element_number = #{elementNumber},</if>
+            <if test="elementId != null ">element_id = #{elementId},</if>
+            <if test="stapleNumber != null ">staple_number = #{stapleNumber},</if>
+            <if test="stapleFoodId != null ">staple_food_id = #{stapleFoodId},</if>
+            <if test="drinkNumber != null ">drink_number = #{drinkNumber},</if>
+            <if test="drinkId != null ">drink_id = #{drinkId},</if>
+            <if test="releaseTime != null ">release_time = #{releaseTime},</if>
+            <if test="isDisplay != null  and isDisplay != ''">is_display = #{isDisplay},</if>
+            <if test="dr != null  and dr != ''">dr = #{dr},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="bak != null  and bak != ''">bak = #{bak},</if>
+            <if test="def != null  and def != ''">def = #{def},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMealReleaseById" parameterType="Long">
+        delete from meal_release where id = #{id}
+    </delete>
+
+    <delete id="deleteMealReleaseByIds" parameterType="String">
+        delete from meal_release where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

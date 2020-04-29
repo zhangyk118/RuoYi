@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改餐品')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-item-edit" th:object="${restItem}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">所属餐厅：</label>
+                <div class="col-sm-8">
+                    <input name="toRestaurant" th:field="*{toRestaurant}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">餐品名称：</label>
+                <div class="col-sm-8">
+                    <input name="itemName" th:field="*{itemName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">餐品类型：</label>
+                <div class="col-sm-8">
+                    <select name="itemType" class="form-control m-b" th:with="type=${@dict.getType('sys_rest_start')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{itemType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">餐品口味：</label>
+                <div class="check-box" th:each="dict : ${@dict.getType('sys_kw')}">
+                    <input type="checkbox" th:id="${'status_' + dict.dictCode}" name="itemFlavor" th:value="${dict.dictValue}" th:checked="${dict.default}">
+                    <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">价格：</label>
+                <div class="col-sm-8">
+                    <input name="itemPrice" th:field="*{itemPrice}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">折扣：</label>
+                <div class="col-sm-8">
+                    <input name="itemDescount" th:field="*{itemDescount}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">餐品状态：</label>
+                <div class="col-sm-8">
+                    <input name="itemStart" th:field="*{itemStart}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">图片路径：</label>
+                <div class="col-sm-8">
+                    <input name="itemImg" th:field="*{itemImg}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否显示：</label>
+                <div class="col-sm-8">
+                    <input name="isDisplay" th:field="*{isDisplay}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">描述：</label>
+                <div class="col-sm-8">
+                    <input name="bads" th:field="*{bads}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">发布数量：</label>
+                <div class="col-sm-8">
+                    <input name="releaseNumber" th:field="*{releaseNumber}" class="form-control" type="text">
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "rest/item";
+        $("#form-item-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-item-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

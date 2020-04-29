@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.manage.mapper.FoodManageMapper">
+    
+    <resultMap type="FoodManage" id="FoodManageResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="sortingId"    column="sorting_id"    />
+        <result property="sortingName"    column="sorting_name"    />
+    </resultMap>
+
+    <sql id="selectFoodManageVo">
+        select id, company_id, company_name, sorting_id, sorting_name from food_manage
+    </sql>
+
+    <select id="selectFoodManageList" parameterType="FoodManage" resultMap="FoodManageResult">
+        <include refid="selectFoodManageVo"/>
+        <where>  
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="sortingName != null  and sortingName != ''"> and sorting_name like concat('%', #{sortingName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectFoodManageById" parameterType="Long" resultMap="FoodManageResult">
+        <include refid="selectFoodManageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFoodManage" parameterType="FoodManage" useGeneratedKeys="true" keyProperty="id">
+        insert into food_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="companyName != null  and companyName != ''">company_name,</if>
+            <if test="sortingId != null ">sorting_id,</if>
+            <if test="sortingName != null  and sortingName != ''">sorting_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="companyName != null  and companyName != ''">#{companyName},</if>
+            <if test="sortingId != null ">#{sortingId},</if>
+            <if test="sortingName != null  and sortingName != ''">#{sortingName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFoodManage" parameterType="FoodManage">
+        update food_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="sortingId != null ">sorting_id = #{sortingId},</if>
+            <if test="sortingName != null  and sortingName != ''">sorting_name = #{sortingName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="updateFoodManages" parameterType="FoodManage">
+        update food_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="sortingId != null ">sorting_id = #{sortingId},</if>
+            <if test="sortingName != null  and sortingName != ''">sorting_name = #{sortingName},</if>
+        </trim>
+        where company_id = #{companyId}
+    </update>
+
+    <delete id="deleteFoodManageById" parameterType="Long">
+        delete from food_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteFoodManageByIds" parameterType="String">
+        delete from food_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteFoods" parameterType="String">
+        delete from food_manage where company_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

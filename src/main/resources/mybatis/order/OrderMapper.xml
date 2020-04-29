@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.order.form.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="mealClassCode"    column="meal_class_code"    />
+        <result property="mealClassName"    column="meal_class_name"    />
+        <result property="meatNumber"    column="meat_number"    />
+        <result property="meatId"    column="meat_id"    />
+        <result property="elementNumber"    column="element_number"    />
+        <result property="elementId"    column="element_id"    />
+        <result property="stapleNumber"    column="staple_number"    />
+        <result property="stapleFoodId"    column="staple_food_id"    />
+        <result property="drinkNumber"    column="drink_number"    />
+        <result property="drinkId"    column="drink_id"    />
+        <result property="completeNumber"    column="complete_number"    />
+        <result property="surplusNumber"    column="surplus_number"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="completeOrderNumber"    column="complete_order_number"    />
+        <result property="notOrderNumber"    column="not_order_number"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="leaveTime"    column="leave_time"    />
+        <result property="serviceTime"    column="service_time"    />
+        <result property="receiptTime"    column="receipt_time"    />
+        <result property="bak"    column="bak"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, company_name, company_id, meal_class_code, meal_class_name, meat_number, meat_id, element_number, element_id, staple_number, staple_food_id, drink_number, drink_id, complete_number, surplus_number, order_number, complete_order_number, not_order_number, order_status, leave_time, service_time, receipt_time, bak from order_form
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        insert into order_form
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyName != null  and companyName != ''">company_name,</if>
+            <if test="companyId != null  and companyId != ''">company_id,</if>
+            <if test="mealClassCode != null  and mealClassCode != ''">meal_class_code,</if>
+            <if test="mealClassName != null  and mealClassName != ''">meal_class_name,</if>
+            <if test="meatNumber != null ">meat_number,</if>
+            <if test="meatId != null  and meatId != ''">meat_id,</if>
+            <if test="elementNumber != null ">element_number,</if>
+            <if test="elementId != null  and elementId != ''">element_id,</if>
+            <if test="stapleNumber != null ">staple_number,</if>
+            <if test="stapleFoodId != null  and stapleFoodId != ''">staple_food_id,</if>
+            <if test="drinkNumber != null ">drink_number,</if>
+            <if test="drinkId != null  and drinkId != ''">drink_id,</if>
+            <if test="completeNumber != null ">complete_number,</if>
+            <if test="surplusNumber != null ">surplus_number,</if>
+            <if test="orderNumber != null ">order_number,</if>
+            <if test="completeOrderNumber != null ">complete_order_number,</if>
+            <if test="notOrderNumber != null ">not_order_number,</if>
+            <if test="orderStatus != null  and orderStatus != ''">order_status,</if>
+            <if test="leaveTime != null ">leave_time,</if>
+            <if test="serviceTime != null ">service_time,</if>
+            <if test="receiptTime != null ">receipt_time,</if>
+            <if test="bak != null  and bak != ''">bak,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyName != null  and companyName != ''">#{companyName},</if>
+            <if test="companyId != null  and companyId != ''">#{companyId},</if>
+            <if test="mealClassCode != null  and mealClassCode != ''">#{mealClassCode},</if>
+            <if test="mealClassName != null  and mealClassName != ''">#{mealClassName},</if>
+            <if test="meatNumber != null ">#{meatNumber},</if>
+            <if test="meatId != null  and meatId != ''">#{meatId},</if>
+            <if test="elementNumber != null ">#{elementNumber},</if>
+            <if test="elementId != null  and elementId != ''">#{elementId},</if>
+            <if test="stapleNumber != null ">#{stapleNumber},</if>
+            <if test="stapleFoodId != null  and stapleFoodId != ''">#{stapleFoodId},</if>
+            <if test="drinkNumber != null ">#{drinkNumber},</if>
+            <if test="drinkId != null  and drinkId != ''">#{drinkId},</if>
+            <if test="completeNumber != null ">#{completeNumber},</if>
+            <if test="surplusNumber != null ">#{surplusNumber},</if>
+            <if test="orderNumber != null ">#{orderNumber},</if>
+            <if test="completeOrderNumber != null ">#{completeOrderNumber},</if>
+            <if test="notOrderNumber != null ">#{notOrderNumber},</if>
+            <if test="orderStatus != null  and orderStatus != ''">#{orderStatus},</if>
+            <if test="leaveTime != null ">#{leaveTime},</if>
+            <if test="serviceTime != null ">#{serviceTime},</if>
+            <if test="receiptTime != null ">#{receiptTime},</if>
+            <if test="bak != null  and bak != ''">#{bak},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update order_form
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="companyId != null  and companyId != ''">company_id = #{companyId},</if>
+            <if test="mealClassCode != null  and mealClassCode != ''">meal_class_code = #{mealClassCode},</if>
+            <if test="mealClassName != null  and mealClassName != ''">meal_class_name = #{mealClassName},</if>
+            <if test="meatNumber != null ">meat_number = #{meatNumber},</if>
+            <if test="meatId != null  and meatId != ''">meat_id = #{meatId},</if>
+            <if test="elementNumber != null ">element_number = #{elementNumber},</if>
+            <if test="elementId != null  and elementId != ''">element_id = #{elementId},</if>
+            <if test="stapleNumber != null ">staple_number = #{stapleNumber},</if>
+            <if test="stapleFoodId != null  and stapleFoodId != ''">staple_food_id = #{stapleFoodId},</if>
+            <if test="drinkNumber != null ">drink_number = #{drinkNumber},</if>
+            <if test="drinkId != null  and drinkId != ''">drink_id = #{drinkId},</if>
+            <if test="completeNumber != null ">complete_number = #{completeNumber},</if>
+            <if test="surplusNumber != null ">surplus_number = #{surplusNumber},</if>
+            <if test="orderNumber != null ">order_number = #{orderNumber},</if>
+            <if test="completeOrderNumber != null ">complete_order_number = #{completeOrderNumber},</if>
+            <if test="notOrderNumber != null ">not_order_number = #{notOrderNumber},</if>
+            <if test="orderStatus != null  and orderStatus != ''">order_status = #{orderStatus},</if>
+            <if test="leaveTime != null ">leave_time = #{leaveTime},</if>
+            <if test="serviceTime != null ">service_time = #{serviceTime},</if>
+            <if test="receiptTime != null ">receipt_time = #{receiptTime},</if>
+            <if test="bak != null  and bak != ''">bak = #{bak},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Long">
+        delete from order_form where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from order_form where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectOrderNumber" resultType="java.lang.Integer" parameterType="string">
+        select count(*) from order_form
+        where order_status= #{state}
+    </select>
+    <select id="orderState" resultMap="OrderResult" parameterType="string">
+        <include refid="selectOrderVo"/>
+        <where>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status =#{orderStatus}</if>
+        </where>
+    </select>
+</mapper>

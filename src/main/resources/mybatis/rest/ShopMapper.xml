@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.rest.shop.mapper.ShopMapper">
+    
+    <resultMap type="Shop" id="ShopResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="shopkeeperName"    column="shopkeeper_name"    />
+        <result property="shopName"    column="shop_name"    />
+        <result property="contact"    column="contact"    />
+        <result property="openTime"    column="open_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="moveTime"    column="move_time"    />
+        <result property="shopType"    column="shop_type"    />
+        <result property="shopState"    column="shop_state"    />
+        <result property="shopGrade"    column="shop_grade"    />
+        <result property="idNumber"    column="id_number"    />
+        <result property="fabloousNumber"    column="fabloous_number"    />
+        <result property="badNumber"    column="bad_number"    />
+        <result property="cumulativeTakeOut"    column="cumulative_take_out"    />
+        <result property="cumulativeTakeNumber"    column="cumulative_take_number"    />
+        <result property="shopAdress"    column="shop_adress"    />
+        <result property="def1"    column="def1"    />
+        <result property="def2"    column="def2"    />
+        <result property="def3"    column="def3"    />
+    </resultMap>
+
+    <sql id="selectShopVo">
+        select id, code, shopkeeper_name, shop_name, contact, open_time, end_time, move_time, shop_type, shop_state, shop_grade, id_number, fabloous_number, bad_number, cumulative_take_out, cumulative_take_number, shop_adress, def1, def2, def3 from rest_shop
+    </sql>
+
+    <select id="selectShopList" parameterType="Shop" resultMap="ShopResult">
+        <include refid="selectShopVo"/>
+        <where>  
+            <if test="shopName != null  and shopName != ''"> and shop_name like concat('%', #{shopName}, '%')</if>
+            <if test="shopType != null  and shopType != ''"> and shop_type like concat('%', #{shopType}, '%')</if>
+            <if test="shopState != null  and shopState != ''"> and shop_state like concat('%', #{shopState}, '%')</if>
+            <if test="shopGrade != null  and shopGrade != ''"> and shop_grade like concat('%', #{shopGrade}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectShopById" parameterType="Long" resultMap="ShopResult">
+        <include refid="selectShopVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertShop" parameterType="Shop">
+        insert into rest_shop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="shopkeeperName != null  and shopkeeperName != ''">shopkeeper_name,</if>
+            <if test="shopName != null  and shopName != ''">shop_name,</if>
+            <if test="contact != null  and contact != ''">contact,</if>
+            <if test="openTime != null ">open_time,</if>
+            <if test="endTime != null ">end_time,</if>
+            <if test="moveTime != null ">move_time,</if>
+            <if test="shopType != null  and shopType != ''">shop_type,</if>
+            <if test="shopState != null  and shopState != ''">shop_state,</if>
+            <if test="shopGrade != null  and shopGrade != ''">shop_grade,</if>
+            <if test="idNumber != null ">id_number,</if>
+            <if test="fabloousNumber != null ">fabloous_number,</if>
+            <if test="badNumber != null ">bad_number,</if>
+            <if test="cumulativeTakeOut != null ">cumulative_take_out,</if>
+            <if test="cumulativeTakeNumber != null ">cumulative_take_number,</if>
+            <if test="shopAdress != null  and shopAdress != ''">shop_adress,</if>
+            <if test="def1 != null  and def1 != ''">def1,</if>
+            <if test="def2 != null  and def2 != ''">def2,</if>
+            <if test="def3 != null  and def3 != ''">def3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="shopkeeperName != null  and shopkeeperName != ''">#{shopkeeperName},</if>
+            <if test="shopName != null  and shopName != ''">#{shopName},</if>
+            <if test="contact != null  and contact != ''">#{contact},</if>
+            <if test="openTime != null ">#{openTime},</if>
+            <if test="endTime != null ">#{endTime},</if>
+            <if test="moveTime != null ">#{moveTime},</if>
+            <if test="shopType != null  and shopType != ''">#{shopType},</if>
+            <if test="shopState != null  and shopState != ''">#{shopState},</if>
+            <if test="shopGrade != null  and shopGrade != ''">#{shopGrade},</if>
+            <if test="idNumber != null ">#{idNumber},</if>
+            <if test="fabloousNumber != null ">#{fabloousNumber},</if>
+            <if test="badNumber != null ">#{badNumber},</if>
+            <if test="cumulativeTakeOut != null ">#{cumulativeTakeOut},</if>
+            <if test="cumulativeTakeNumber != null ">#{cumulativeTakeNumber},</if>
+            <if test="shopAdress != null  and shopAdress != ''">#{shopAdress},</if>
+            <if test="def1 != null  and def1 != ''">#{def1},</if>
+            <if test="def2 != null  and def2 != ''">#{def2},</if>
+            <if test="def3 != null  and def3 != ''">#{def3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShop" parameterType="Shop">
+        update rest_shop
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="shopkeeperName != null  and shopkeeperName != ''">shopkeeper_name = #{shopkeeperName},</if>
+            <if test="shopName != null  and shopName != ''">shop_name = #{shopName},</if>
+            <if test="contact != null  and contact != ''">contact = #{contact},</if>
+            <if test="openTime != null ">open_time = #{openTime},</if>
+            <if test="endTime != null ">end_time = #{endTime},</if>
+            <if test="moveTime != null ">move_time = #{moveTime},</if>
+            <if test="shopType != null  and shopType != ''">shop_type = #{shopType},</if>
+            <if test="shopState != null  and shopState != ''">shop_state = #{shopState},</if>
+            <if test="shopGrade != null  and shopGrade != ''">shop_grade = #{shopGrade},</if>
+            <if test="idNumber != null ">id_number = #{idNumber},</if>
+            <if test="fabloousNumber != null ">fabloous_number = #{fabloousNumber},</if>
+            <if test="badNumber != null ">bad_number = #{badNumber},</if>
+            <if test="cumulativeTakeOut != null ">cumulative_take_out = #{cumulativeTakeOut},</if>
+            <if test="cumulativeTakeNumber != null ">cumulative_take_number = #{cumulativeTakeNumber},</if>
+            <if test="shopAdress != null  and shopAdress != ''">shop_adress = #{shopAdress},</if>
+            <if test="def1 != null  and def1 != ''">def1 = #{def1},</if>
+            <if test="def2 != null  and def2 != ''">def2 = #{def2},</if>
+            <if test="def3 != null  and def3 != ''">def3 = #{def3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShopById" parameterType="Long">
+        delete from rest_shop where id = #{id}
+    </delete>
+
+    <delete id="deleteShopByIds" parameterType="String">
+        delete from rest_shop where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.rest.item.mapper.RestItemMapper">
+    
+    <resultMap type="RestItem" id="RestItemResult">
+        <result property="id"    column="id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="itemType"    column="item_type"    />
+        <result property="itemFlavor"    column="item_flavor"    />
+        <result property="itemPrice"    column="item_price"    />
+        <result property="itemDescount"    column="item_descount"    />
+        <result property="itemStart"    column="item_start"    />
+        <result property="itemImg"    column="item_img"    />
+        <result property="isDisplay"    column="is_display"    />
+        <result property="bads"    column="bads"    />
+        <result property="totalNumber"    column="total_number"    />
+        <result property="totalFabulous"    column="total_fabulous"    />
+        <result property="totalBad"    column="total_bad"    />
+        <result property="releaseNumber"    column="release_number"    />
+        <result property="toRestaurant"    column="to_restaurant"    />
+        <result property="def1"    column="def1"    />
+        <result property="def2"    column="def2"    />
+        <result property="def3"    column="def3"    />
+    </resultMap>
+
+    <sql id="selectRestItemVo">
+        select id, item_name, item_type, item_flavor, item_price, item_descount, item_start, item_img, is_display, bads, total_number, total_fabulous, total_bad, release_number, to_restaurant, def1, def2, def3 from rest_item
+    </sql>
+
+    <select id="selectRestItemList" parameterType="RestItem" resultMap="RestItemResult">
+        <include refid="selectRestItemVo"/>
+        <where>  
+            <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
+            <if test="itemType != null  and itemType != ''"> and item_type = #{itemType}</if>
+            <if test="toRestaurant != null  and toRestaurant != ''"> and to_restaurant = #{toRestaurant}</if>
+        </where>
+    </select>
+    
+    <select id="selectRestItemById" parameterType="Long" resultMap="RestItemResult">
+        <include refid="selectRestItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRestItem" parameterType="RestItem" useGeneratedKeys="true" keyProperty="id">
+        insert into rest_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemName != null  and itemName != ''">item_name,</if>
+            <if test="itemType != null  and itemType != ''">item_type,</if>
+            <if test="itemFlavor != null  and itemFlavor != ''">item_flavor,</if>
+            <if test="itemPrice != null ">item_price,</if>
+            <if test="itemDescount != null ">item_descount,</if>
+            <if test="itemStart != null  and itemStart != ''">item_start,</if>
+            <if test="itemImg != null  and itemImg != ''">item_img,</if>
+            <if test="isDisplay != null  and isDisplay != ''">is_display,</if>
+            <if test="bads != null  and bads != ''">bads,</if>
+            <if test="totalNumber != null ">total_number,</if>
+            <if test="totalFabulous != null  and totalFabulous != ''">total_fabulous,</if>
+            <if test="totalBad != null ">total_bad,</if>
+            <if test="releaseNumber != null ">release_number,</if>
+            <if test="toRestaurant != null  and toRestaurant != ''">to_restaurant,</if>
+            <if test="def1 != null  and def1 != ''">def1,</if>
+            <if test="def2 != null  and def2 != ''">def2,</if>
+            <if test="def3 != null  and def3 != ''">def3,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemName != null  and itemName != ''">#{itemName},</if>
+            <if test="itemType != null  and itemType != ''">#{itemType},</if>
+            <if test="itemFlavor != null  and itemFlavor != ''">#{itemFlavor},</if>
+            <if test="itemPrice != null ">#{itemPrice},</if>
+            <if test="itemDescount != null ">#{itemDescount},</if>
+            <if test="itemStart != null  and itemStart != ''">#{itemStart},</if>
+            <if test="itemImg != null  and itemImg != ''">#{itemImg},</if>
+            <if test="isDisplay != null  and isDisplay != ''">#{isDisplay},</if>
+            <if test="bads != null  and bads != ''">#{bads},</if>
+            <if test="totalNumber != null ">#{totalNumber},</if>
+            <if test="totalFabulous != null  and totalFabulous != ''">#{totalFabulous},</if>
+            <if test="totalBad != null ">#{totalBad},</if>
+            <if test="releaseNumber != null ">#{releaseNumber},</if>
+            <if test="toRestaurant != null  and toRestaurant != ''">#{toRestaurant},</if>
+            <if test="def1 != null  and def1 != ''">#{def1},</if>
+            <if test="def2 != null  and def2 != ''">#{def2},</if>
+            <if test="def3 != null  and def3 != ''">#{def3},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRestItem" parameterType="RestItem">
+        update rest_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemName != null  and itemName != ''">item_name = #{itemName},</if>
+            <if test="itemType != null  and itemType != ''">item_type = #{itemType},</if>
+            <if test="itemFlavor != null  and itemFlavor != ''">item_flavor = #{itemFlavor},</if>
+            <if test="itemPrice != null ">item_price = #{itemPrice},</if>
+            <if test="itemDescount != null ">item_descount = #{itemDescount},</if>
+            <if test="itemStart != null  and itemStart != ''">item_start = #{itemStart},</if>
+            <if test="itemImg != null  and itemImg != ''">item_img = #{itemImg},</if>
+            <if test="isDisplay != null  and isDisplay != ''">is_display = #{isDisplay},</if>
+            <if test="bads != null  and bads != ''">bads = #{bads},</if>
+            <if test="totalNumber != null ">total_number = #{totalNumber},</if>
+            <if test="totalFabulous != null  and totalFabulous != ''">total_fabulous = #{totalFabulous},</if>
+            <if test="totalBad != null ">total_bad = #{totalBad},</if>
+            <if test="releaseNumber != null ">release_number = #{releaseNumber},</if>
+            <if test="toRestaurant != null  and toRestaurant != ''">to_restaurant = #{toRestaurant},</if>
+            <if test="def1 != null  and def1 != ''">def1 = #{def1},</if>
+            <if test="def2 != null  and def2 != ''">def2 = #{def2},</if>
+            <if test="def3 != null  and def3 != ''">def3 = #{def3},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRestItemById" parameterType="Long">
+        delete from rest_item where id = #{id}
+    </delete>
+
+    <delete id="deleteRestItemByIds" parameterType="String">
+        delete from rest_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectMealType" resultMap="RestItemResult">
+        <include refid="selectRestItemVo"/>
+        where item_type = #{id}
+    </select>
+</mapper>

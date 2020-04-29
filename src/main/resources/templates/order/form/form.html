@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('订单管理列表')"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>公司名称：</label>
+                            <input type="text" name="companyName"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="order:form:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="order:form:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
+               shiro:hasPermission="order:form:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="order:form:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('order:form:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('order:form:remove')}]];
+        var prefix = ctx + "order/form";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "订单管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id', 
+                    title: 'null',
+                    visible: false
+                },
+                {
+                    field: 'companyName', 
+                    title: '公司名称'
+                },
+                {
+                    field: 'completeNumber', 
+                    title: '完成主食数量'
+                },
+                {
+                    field: 'surplusNumber', 
+                    title: '未完成主食分拣数量'
+                },
+                {
+                    field: 'orderNumber', 
+                    title: '订单数'
+                },
+                {
+                    field: 'completeOrderNumber', 
+                    title: '已完成订单数'
+                },
+                {
+                    field: 'notOrderNumber', 
+                    title: '未完成订单数'
+                },
+                {
+                    field: 'leaveTime', 
+                    title: '出发时间'
+                },
+                {
+                    field: 'serviceTime', 
+                    title: '送达时间'
+                },
+                {
+                    field: 'receiptTime', 
+                    title: '接单时间'
+                },
+                {
+                    field: 'bak', 
+                    title: '备注'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+
+          var index;
+    if(typeof(WebSocket) == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+    }else{
+        console.log("您的浏览器支持WebSocket");
+        index = new WebSocket("ws://localhost:80/WebSocketServer/2");
+        //打开事件
+        index.onopen = function() {
+            console.log("Socket 已打开");
+            index.send("这是来自客户端的消息" + location.href + new Date());
+        };
+        //获得消息事件
+        index.onmessage = function(msg) {
+            console.log("获得消息："+msg.data);
+             if(msg.data=="1"){
+              $.table.refresh();
+          }
+            //发现消息进入    开始处理前端触发逻辑
+        };
+        //关闭事件
+        index.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        index.onerror = function() {
+            alert("Socket发生了错误");
+            //此时可以尝试刷新页面
+        }
+
+    }
+
+    function onSendButtonClick(){
+    	console.log("开始发送");
+    	index.send("这是来自客户端的消息" + location.href + new Date());
+    }
+
+    function onJhButtonClick(){
+    	$.ajax({
+	        url: prefix,
+	        data: {"message":"我是消息"},
+	        type: "get",
+	        processData: false,
+	        contentType: false,
+	        success: function(result) {
+
+	        }
+	    })
+    }
+
+
+</script>
+</body>
+</html>

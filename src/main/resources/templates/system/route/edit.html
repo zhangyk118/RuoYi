@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改流水线路')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-route-edit" th:object="${routeTable}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">打餐员：</label>
+                <div class="col-sm-8">
+                    <select class="form-control m-b required" name="catererId">
+                        <option  th:each="userNames:${userName}" th:text="${userNames.userName}" th:value="${userNames.userId}" th:field="${routeTable.catererId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">打荷员：</label>
+                <div class="col-sm-8">
+                    <select class="form-control m-b required"  name="cartographerId">
+                        <option  th:each="cato:${catos}" th:text="${cato.userName}" th:value="${cato.userId}" th:field="${routeTable.cartographerId}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/route";
+        $("#form-route-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-route-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.route.mapper.RouteTableMapper">
+    
+    <resultMap type="RouteTable" id="RouteTableResult">
+        <result property="routeId"    column="route_id"    />
+        <result property="catererId"    column="caterer_id"    />
+        <result property="catererName"    column="caterer_name"    />
+        <result property="cartographerId"    column="cartographer_id"    />
+        <result property="cartographerName"    column="cartographer_name"    />
+    </resultMap>
+    <resultMap type="User" id="UserResult">
+        <id     property="userId"       column="user_id"      />
+        <result property="deptId"       column="dept_id"      />
+        <result property="loginName"    column="login_name"   />
+        <result property="userName"     column="user_name"    />
+        <result property="userType"     column="user_type"    />
+        <result property="email"        column="email"        />
+        <result property="phonenumber"  column="phonenumber"  />
+        <result property="sex"          column="sex"          />
+        <result property="avatar"       column="avatar"       />
+        <result property="password"     column="password"     />
+        <result property="salt"         column="salt"         />
+        <result property="status"       column="status"       />
+        <result property="delFlag"      column="del_flag"     />
+        <result property="loginIp"      column="login_ip"     />
+        <result property="loginDate"    column="login_date"   />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="remark"       column="remark"       />
+        <result property="company"       column="company"       />
+        <result property="flowLine"       column="flow_Line"       />
+    </resultMap>
+    <sql id="selectRouteTableVo">
+        select id,route_id, caterer_id, caterer_name, cartographer_id, cartographer_name from route_table
+    </sql>
+
+    <select id="selectRouteTableList" parameterType="RouteTable" resultMap="RouteTableResult">
+        <include refid="selectRouteTableVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="catererId != null "> and caterer_id = #{catererId}</if>
+            <if test="catererName != null  and catererName != ''"> and caterer_name like concat('%', #{catererName}, '%')</if>
+            <if test="cartographerId != null "> and cartographer_id = #{cartographerId}</if>
+            <if test="cartographerName != null  and cartographerName != ''"> and cartographer_name like concat('%', #{cartographerName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRouteTableById" parameterType="Long" resultMap="RouteTableResult">
+        <include refid="selectRouteTableVo"/>
+        where id = #{routeId}
+    </select>
+    <select id="selectRouteId" parameterType="Long" resultMap="RouteTableResult" >
+        <include refid="selectRouteTableVo"/>
+        where route_id = #{routeId}
+    </select>
+
+        
+    <insert id="insertRouteTable" parameterType="RouteTable" useGeneratedKeys="true" keyProperty="routeId">
+        insert into route_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeId != null ">route_id,</if>
+            <if test="catererId != null ">caterer_id,</if>
+            <if test="catererName != null  and catererName != ''">caterer_name,</if>
+            <if test="cartographerId != null ">cartographer_id,</if>
+            <if test="cartographerName != null  and cartographerName != ''">cartographer_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeId != null ">#{routeId},</if>
+            <if test="catererId != null ">#{catererId},</if>
+            <if test="catererName != null  and catererName != ''">#{catererName},</if>
+            <if test="cartographerId != null ">#{cartographerId},</if>
+            <if test="cartographerName != null  and cartographerName != ''">#{cartographerName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRouteTable" parameterType="RouteTable">
+        update route_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeId != null ">route_id = #{routeId},</if>
+            <if test="catererId != null ">caterer_id = #{catererId},</if>
+            <if test="catererName != null  and catererName != ''">caterer_name = #{catererName},</if>
+            <if test="cartographerId != null ">cartographer_id = #{cartographerId},</if>
+            <if test="cartographerName != null  and cartographerName != ''">cartographer_name = #{cartographerName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRouteTableById" parameterType="Long">
+        delete from route_table where id = #{id}
+    </delete>
+
+    <delete id="deleteRouteTableByIds" parameterType="String">
+        delete from route_table where id in
+        <foreach item="routeId" collection="array" open="(" separator="," close=")">
+            #{routeId}
+        </foreach>
+    </delete>
+    <select id="selectRole" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select user_id from sys_user_role
+        where role_id =#{role}
+    </select>
+    <select id="selectUserName" resultType="string" resultMap="UserResult">
+        select * from sys_user
+        where user_id in
+        <foreach collection="list" open="(" close=")" index="index" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

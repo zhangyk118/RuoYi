@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('客户管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>区域：</label>
+                                <input type="text" name="region"/>
+                            </li>
+                            <li>
+                                <label>公司名称：</label>
+                                <input type="text" name="companyName"/>
+                            </li>
+                            <li>
+                                <label>所属线路：</label>
+                                <select name="flowLine" th:with="type=${@dict.getType('flow_line')}">
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:customer:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:customer:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:customer:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:customer:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:customer:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:customer:remove')}]];
+        var statusDatas = [[${@dict.getType('sys_customer')}]];
+        var prefix = ctx + "system/customer";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "客户管理",
+                columns: [{
+                    checkbox: true
+                },
+                    {
+                    field: 'id',
+                    title: '主键id',
+                    visible: false
+                },
+                {
+                    field: 'region', 
+                    title: '区域'
+                },
+                {
+                    field: 'companyCode', 
+                    title: '公司编号'
+                },
+                {
+                    field: 'companyName', 
+                    title: '公司名称'
+                },
+                {
+                    field: 'floor', 
+                    title: '楼宇'
+                },
+                {
+                    field: 'unitNumber', 
+                    title: '单元'
+                },
+                {
+                    field: 'floorNumber', 
+                    title: 'l楼层'
+                },
+                {
+                    field: 'roomNumber', 
+                    title: '房号'
+                },
+                {
+                    field: 'status', 
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                       return $.table.selectDictLabel(statusDatas, value);
+                    }
+                },
+                {
+                    field: 'giveLunchTime', 
+                    title: '送餐时间'
+                },
+                {
+                    field: 'giveDinnerTime', 
+                    title: '送餐时间'
+                },
+                 {
+                    field: 'flowLine',
+                    title: '用户所在线路',
+		        	formatter: function (value, row, index) {
+		        		return flowLines(row,value);
+		        	}
+		        },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+
+        /* 用户所在线路显示 */
+		function flowLines(row,value) {
+    			return '<input id="flow" style="width:30%"; onBlur="line(\'' + row.id + '\',value)" value=\'' + row.flowLine + '\'></input> ';
+		}
+
+		/* 修改用户线路 */
+		function line(id,value) {
+			$.modal.confirm("确认要修改用户线路吗？", function() {
+				$.operate.post(prefix + "/edit", { "id": id, "flowLine":  value });
+		    })
+		}
+    </script>
+</body>
+</html>

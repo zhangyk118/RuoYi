@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.delivery.mapper.DeliveryTableMapper">
+    
+    <resultMap type="DeliveryTable" id="DeliveryTableResult">
+        <result property="id"    column="id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="distributorId"    column="distributor_id"    />
+        <result property="distributorName"    column="distributor_name"    />
+    </resultMap>
+
+    <sql id="selectDeliveryTableVo">
+        select id, company_id, company_name, distributor_id, distributor_name from delivery_table
+    </sql>
+
+    <select id="selectDeliveryTableList" parameterType="DeliveryTable" resultMap="DeliveryTableResult">
+        <include refid="selectDeliveryTableVo"/>
+        <where>  
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="distributorName != null  and distributorName != ''"> and distributor_name like concat('%', #{distributorName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDeliveryTableById" parameterType="Long" resultMap="DeliveryTableResult">
+        <include refid="selectDeliveryTableVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDeliveryTable" parameterType="DeliveryTable" useGeneratedKeys="true" keyProperty="id">
+        insert into delivery_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="companyName != null  and companyName != ''">company_name,</if>
+            <if test="distributorId != null ">distributor_id,</if>
+            <if test="distributorName != null  and distributorName != ''">distributor_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="companyName != null  and companyName != ''">#{companyName},</if>
+            <if test="distributorId != null ">#{distributorId},</if>
+            <if test="distributorName != null  and distributorName != ''">#{distributorName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeliveryTable" parameterType="DeliveryTable">
+        update delivery_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="distributorId != null ">distributor_id = #{distributorId},</if>
+            <if test="distributorName != null  and distributorName != ''">distributor_name = #{distributorName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="updateDeliveryTables" parameterType="DeliveryTable">
+        update delivery_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="companyName != null  and companyName != ''">company_name = #{companyName},</if>
+            <if test="distributorId != null ">distributor_id = #{distributorId},</if>
+            <if test="distributorName != null  and distributorName != ''">distributor_name = #{distributorName},</if>
+        </trim>
+        where company_id = #{companyId}
+    </update>
+    <delete id="deleteDeliveryTableById" parameterType="Long">
+        delete from delivery_table where id = #{id}
+    </delete>
+
+    <delete id="deleteDeliveryTableByIds" parameterType="String">
+        delete from delivery_table where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteCommpany" parameterType="string">
+        delete from delivery_table where company_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

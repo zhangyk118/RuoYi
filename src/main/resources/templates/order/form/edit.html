@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改订单管理')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-form-edit" th:object="${order}">
+            <input name="id" th:field="*{id}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公司名称：</label>
+                <div class="col-sm-8">
+                    <input name="companyName" th:field="*{companyName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公司id：</label>
+                <div class="col-sm-8">
+                    <input name="companyId" th:field="*{companyId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">餐品大类编号：</label>
+                <div class="col-sm-8">
+                    <input name="mealClassCode" th:field="*{mealClassCode}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">餐品大类名称：</label>
+                <div class="col-sm-8">
+                    <input name="mealClassName" th:field="*{mealClassName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">荤菜数量：</label>
+                <div class="col-sm-8">
+                    <input name="meatNumber" th:field="*{meatNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">荤菜id(多个以逗号分割)：</label>
+                <div class="col-sm-8">
+                    <input name="meatId" th:field="*{meatId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">素菜数量：</label>
+                <div class="col-sm-8">
+                    <input name="elementNumber" th:field="*{elementNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">素材id(多个以逗号分割）：</label>
+                <div class="col-sm-8">
+                    <input name="elementId" th:field="*{elementId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">主食数量：</label>
+                <div class="col-sm-8">
+                    <input name="stapleNumber" th:field="*{stapleNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">主食id：</label>
+                <div class="col-sm-8">
+                    <input name="stapleFoodId" th:field="*{stapleFoodId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">饮品数量：</label>
+                <div class="col-sm-8">
+                    <input name="drinkNumber" th:field="*{drinkNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">饮品id：</label>
+                <div class="col-sm-8">
+                    <input name="drinkId" th:field="*{drinkId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">完成主食数量：</label>
+                <div class="col-sm-8">
+                    <input name="completeNumber" th:field="*{completeNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">未完成主食分拣数量：</label>
+                <div class="col-sm-8">
+                    <input name="surplusNumber" th:field="*{surplusNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">订单数：</label>
+                <div class="col-sm-8">
+                    <input name="orderNumber" th:field="*{orderNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">已完成订单数：</label>
+                <div class="col-sm-8">
+                    <input name="completeOrderNumber" th:field="*{completeOrderNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">未完成订单数：</label>
+                <div class="col-sm-8">
+                    <input name="notOrderNumber" th:field="*{notOrderNumber}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">1 已下单 ，2 已退单， 3 未打餐 ，4 已打餐，5 未打盒，6 已打盒，7 未装箱，8 未出发，9 已出发 ，10 未送达，11 已送达 ，12 已完成：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="orderStatus" value="">
+                        <label th:for="orderStatus" th:text="未知"></label>
+                    </div>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出发时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="leaveTime" th:value="${#dates.format(order.leaveTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">送达时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="serviceTime" th:value="${#dates.format(order.serviceTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">接单时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="receiptTime" th:value="${#dates.format(order.receiptTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <textarea name="bak" class="form-control">[[*{bak}]]</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "order/form";
+        $("#form-form-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-form-edit').serialize());
+            }
+        }
+
+        $("input[name='leaveTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='serviceTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='receiptTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

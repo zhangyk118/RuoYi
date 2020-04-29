@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增客户管理')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-customer-add">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">区域：</label>
+                <div class="col-sm-4">
+                    <input name="region" class="form-control" type="text">
+                </div>
+                <label class="col-sm-2 control-label">公司编号：</label>
+                <div class="col-sm-4">
+                    <input name="companyCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">公司名称：</label>
+                <div class="col-sm-4">
+                    <input name="companyName" class="form-control" type="text">
+                </div>
+                <label class="col-sm-2 control-label">楼宇：</label>
+                <div class="col-sm-4">
+                    <input name="floor" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">单元：</label>
+                <div class="col-sm-4">
+                    <input name="unitNumber" class="form-control" type="text">
+                </div>
+                <label class="col-sm-2 control-label">l楼层：</label>
+                <div class="col-sm-4">
+                    <input name="floorNumber" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">房号：</label>
+                <div class="col-sm-4">
+                    <input name="roomNumber" class="form-control" type="text">
+                </div>
+                <label class="col-sm-2 control-label">状态：</label>
+                <div class="col-sm-4">
+                    <div class="radio-box" th:each="dict : ${@dict.getType('sys_customer')}">
+                        <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.default}">
+                        <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">送午餐时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="giveLunchTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+                <label class="col-sm-2 control-label">送晚餐时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="giveDinnerTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">配送午餐时长：</label>
+                <div class="col-sm-4">
+                    <input name="deliveLunchLong" class="form-control" type="text">
+                </div>
+                <label class="col-sm-2 control-label">配送晚餐时长：</label>
+                <div class="col-sm-4">
+                    <input name="deliveDinnerLong" class="form-control" type="text">
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">订餐截止时间（午餐）：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="orderDeadlineLunch" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+                <label class="col-sm-2 control-label">订餐截止时间（晚餐）：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="orderDeadlineDinner" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属线路：</label>
+                    <div class="col-sm-4">
+                        <select name="flowLine" class="form-control m-b" th:with="type=${@dict.getType('flow_line')}">
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                        </select>
+                    </div>
+                </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/customer"
+        $("#form-customer-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-customer-add').serialize());
+            }
+        }
+
+        $("input[name='giveLunchTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='giveDinnerTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='orderDeadlineLunch']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='orderDeadlineDinner']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>
